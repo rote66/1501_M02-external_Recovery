@@ -10,15 +10,14 @@
 echo
 echo "   欢迎使用360F4的外挂TWRP"
 echo "   TWRP版本:TWRP3.1.1-0 "
-echo "   本V3制作为小w "
+echo "   本V5制作为小w "
 echo "   更新内容请查看readme"
 echo "   请确定为1501_M02 "
-echo "   script version: ultimate_5.7.6_R16 "
-#判断是否root
-#perm=$(id|cut -b 5)
-#if [ "$perm" != "0" ];then 
-#echo "该脚本需要root！ 请输入: su"; exit; 
-#fi
+判断是否root
+perm=$(id|cut -b 5)
+if [ "$perm" != "0" ];then 
+echo "该脚本需要root以及busybox！ 请输入: su"; exit; 
+fi
 cp -Rf /sdcard/TWRP/shell /data
 chmod -R 777 /data/shell
 echo "  请按回车键进入菜单"
@@ -36,5 +35,5 @@ case $i in
 2) reboot ;;
 3) busybox killall system_server ;;
 4) exit ;;
-5) nohup sh /data/shell/recovery.sh & ;;
+5) sh /data/shell/recovery.sh & ;;
 esac

@@ -1,3 +1,6 @@
+# Modify By w for 360F4 
+# Based on Android6.0
+#Maybe can use in other devices
 # mount point	fstype    device    	[device2]
 
 /boot			emmc	/dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/boot	flags=display="Boot";backup=1;flashimg=1
@@ -13,3 +16,14 @@
 /external_sd		auto	/dev/block/mmcblk1p1	/dev/block/mmcblk1	flags=display="External SDcard";storage;removable;backup=0
 /usbotg			auto	/dev/block/sda1	/dev/block/sda	flags=display="USB-OTG";storage;removable;backup=0
 /persistent			emmc	/dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/frp
+# official
+/protect_f ext4 /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/protect1 flags=display="protect_f";backup=1;flashimg=1
+/protect_s ext4 /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/protect2 flags=display="protect_s";backup=1;flashimg=1
+/nvdata ext4 /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/nvdata flags=display="nvdata";backup=1;flashimg=1
+#official part2
+/proinfo emmc /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/proinfo flags=display="proinfo";backup=1;flashimg=1
+/misc emmc /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/para flags=display="misc";backup=1;flashimg=1
+/expdb emmc /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/expdb flags=display="expdb";backup=1;flashimg=1
+/seccfg emmc /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/seccfg flags=display="seccfg";backup=1;flashimg=1
+/tee1 emmc /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/tee1 flags=display="tee1";backup=1;flashimg=1
+/tee2 emmc /dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/tee2 flags=display="tee2";backup=1;flashimg=1

@@ -2,7 +2,8 @@
 360F4 External TWRP
 *此rec为外挂版
 
-版本V4
+版本V5
+更新日志看自带readme
 基于TWRP3.1.1-0制作
 底为los14.1
 适用机型360F4
