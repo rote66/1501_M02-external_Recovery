@@ -121,7 +121,7 @@
 		<string name="factory_reset_hdr">恢复出厂设置</string>
 		<string name="factory_reset_btn">恢复出厂设置</string>
 		<string name="factory_reset1">清除 Data 分区，Cache 分区和 Dalvik 缓存</string>
-		<string name="factory_reset2">(不会包含内置存储卡)</string>
+		<string name="factory_reset2">(不会包含内置存储)</string>
 		<string name="factory_reset3">大多数时候你只需要</string>
 		<string name="factory_reset4">进行此清除操作即可。</string>
 		<string name="factory_resetting">正在恢复出厂设置…</string>
@@ -394,7 +394,7 @@
 		<string name="part_sd_complete">分区完成</string>
 		<string name="dumlock_hdr">HTC Dumlock</string>
 		<string name="dumlock_restore_btn">恢复初始内核分区</string>
-		<string name="dumlock_restore_confirm">恢复初始内核 boot 镜像？</string>
+		<string name="dumlock_restore_confirm">恢复初始 boot 镜像？</string>
 		<string name="dumlock_restoring">恢复初始 Boot 中…</string>
 		<string name="dumlock_restore_complete">恢复初始 Boot 完成</string>
 		<string name="dumlock_reflash_btn">重刷 Recovery</string>
@@ -462,7 +462,7 @@
 		<string name="fix_contexts_complete">修复 Context 完毕</string>
 		<string name="reboot_hdr">重启菜单</string>
 		<string name="su_hdr">SuperSU 检测</string>
-		<string name="su_note1">系统看起来尚未 root。</string>
+		<string name="su_note1">系统看起来尚未 root 。</string>
 		<string name="su_note2">是否安装 SuperSU？</string>
 		<string name="su_note3">将对你的手机进行 root 操作。</string>
 		<string name="su_cancel">不安装</string>
@@ -573,7 +573,7 @@
 		<string name="no_md5_found">无法为 '{1}' 找到 MD5 校验文件。请取消允许 MD5 校验选项。</string>
 		<string name="md5_fail_match">MD5 校验失败 '{1}'。</string>
 		<string name="fail_decrypt_tar">解密 tar 文件 '{1}' 失败</string>
-		<string name="format_data_msg">你可能需要重启 recovery 才能使用/data。</string>
+		<string name="format_data_msg">你可能需要重启 recovery 才能使用 /data 。</string>
 		<string name="format_data_err">无法格式化并删除加密。</string>
 		<string name="formatting_using">使用 {2} 格式化 {1}…</string>
 		<string name="unable_to_wipe">无法清除 {1}。</string>
@@ -665,9 +665,9 @@
 		<string name="no_real_sdcard">设备没有真正的 SD 卡！中止！</string>
 		<string name="cancel_sideload">取消ADB sideload…</string>
 		<string name="change_fs_err">更换文件系统出错。</string>
-		<string name="disable_bootverify_btn">Root设备</string>
-		<string name="disable_bootverify_confirm">是否Root设备?</string>
-		<string name="disable_bootverify_text">Root后会导致设备无法通过官方OTA更新。</string>
+		<string name="disable_bootverify_btn">Root 设备</string>
+		<string name="disable_bootverify_confirm">是否 Root 设备?</string>
+		<string name="disable_bootverify_text">Root 后会导致设备无法通过官方OTA更新。</string>
 		<string name="theme_ver_err">自定义主题不兼容 TWRP 版本。请使用官方主题。</string>
 		<string name="up_a_level">(返回上级目录)</string>
 	</resources>
