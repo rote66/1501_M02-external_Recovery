@@ -13,7 +13,7 @@ ___
 底包为 `los14.1`  
 适用机型 `360f4` 移动版  
 既 `360-1501_M02`  
-<STRIKE>虽然 `360-1501_A02` 经测试也可以使用/<STRIKE>  
+<STRIKE>虽然 `360-1501_A02` 经测试也可以使用</STRIKE>  
 其他未经过测试  
 理论上同分区设备可用  
 
@@ -25,7 +25,7 @@ ___
 你需要准备好的东西：  
   
 1. 安装 [busybox][meefik/busybox] 并在软件内点击 `Install`  
-2. 安装 [终端][zt515/Ansole] <STRIKE>（虽然说什么终端都可以）/<STRIKE>  
+2. 安装 [终端][zt515/Ansole] <STRIKE>（虽然说什么终端都可以）</STRIKE>  
 3. 一个可以进行 root 操作的文件管理器（推荐 [RE文件管理器][speedsoftware/rootexplorer] 或者是 [MT管理器][bin/mtfileManager]）  
 4. 一双勤劳的手和会思考的大脑  
 当这些准备好之后你就可以开始了  
@@ -56,7 +56,8 @@ ___
 
 交流讨论 & 反馈：  
   
-QQ群：639102984  
+QQ群：[639102984][QQqun]  
+<s>也可以去 [416190782][QQqun2] 串串门</s>  
 
 ___
 
@@ -88,3 +89,5 @@ ___
 [topjohnwu/Magisk]:https://github.com/topjohnwu/MagiskManager/releases
 [bin/mtfileManager]:http://www.coolapk.com/apk/bin.mt.plus
 [speedsoftware/rootexplorer]:http://www.coolapk.com/apk/com.speedsoftware.rootexplorer
+[QQqun]:https://jq.qq.com/?_wv=1027&k=5xTl0HJ
+[QQqun2]:https://jq.qq.com/?_wv=1027&k=5EqB7ph
