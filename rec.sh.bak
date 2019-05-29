@@ -1,0 +1,220 @@
+#!/system/bin/sh
+
+
+
+
+###########################################
+# MenuScript V6 for 1501_M02
+# Mod by 小w
+# 微小的工作 by 滑稽Pro
+###########################################
+version='5.0.1'
+version_code='6'
+
+
+
+#调用可能是 busybox 的命令
+exec_command(){
+    #实体劫持这三个 box 后，这个函数一定会误判
+    toybox_path="$(whence toybox)"
+    if [[ -s "${toybox_path}" && -r "${toybox_path}" ]]; then
+        "grep -a ${1} ${toybox_path}" >/dev/null 2>&1 &
+        check_toybox_command_callback=$?
+    fi
+    
+    toolbox_path="$(whence toolbox)"
+    if [[ -s "${toolbox_path}" && -r "${toolbox_path}" ]]; then
+        "grep -a ${1} ${toolbox_path}"  >/dev/null 2>&1 &
+        check_toolbox_command_callback=$?
+    fi
+            
+    busybox_path="$(whence busybox)"
+    if [[ -s "${busybox_path}" && -r "${busybox_path}" ]]; then
+        "grep -a ${1} ${busybox_path}" >/dev/null 2>&1 &
+        check_busybox_command_callback=$?
+    fi
+    
+    
+    
+    command_path="$(whence ${1})"
+    if [[ -s "${command_path}" && -r "${command_path}" ]]; then
+        #我能怎么办？我才是最绝望的吧！
+        check_command_callback='0'
+    fi
+    
+    
+    
+    
+    if [[ "${1}" == "*box" ]]; then
+        "${@}" 
+    elif [[ "${check_busybox_command_callback}" == '0' ]]; then
+        busybox "${@}"
+    elif [[ "${check_toolbox_command_callback}" == '0' ]]; then
+        toolbox "${@}"
+    elif [[ "${check_toybox_command_callback}" == '0' ]]; then
+        toybox "${@}"
+    elif [[ "${check_command_callback}" == '0' ]]; then
+        "${@}"
+    else
+        echo "! ${1} 不存在" 1>&2
+        return 127
+    fi
+}
+exec_cut(){
+    exec_command cut "${@}"
+}
+exec_killall(){
+    exec_command killall "${@}"
+}
+exec_dirname(){
+    exec_command dirname "${@}"
+}
+
+
+
+
+
+#判断是否以root进程执行
+if [[ "${USER_ID}" == "" ]]; then
+    if [[ "${USER}" == "root" ]]; then
+        USER_ID="0"
+    elif id | grep -E '^uid=0(root) gid=0(root).*$' >/dev/null 2>&1 ; then
+        USER_ID="0"
+    elif [[ $(id | exec_cut -b 5) = "0" ]]; then
+        USER_ID="0"
+    fi
+fi
+if [[ "${USER_ID}" == "0" ]]; then 
+su_version="$(su -v)"
+    if [[ "${su_version}" == *"360"* ]]; then
+        echo "注意：用 360root 启动外挂式 TWRP 刷入 SuperSU 时建议准备好完整的卡刷包并提前刷入\n"
+    elif [[ "${su_version}" == *"king"* ]]; then
+        echo "按照惯例，多数外挂式 TWRP 在 Kingroot 为 su 提供方时很有可能出现一些神奇问题\n" 1>&2
+    elif [[ "${su_version}" == *"SUPERSU"* ]]; then
+        echo "美哉！\n"
+    elif [[ "${su_version}" == *"MAGISKSU"* ]]; then
+        echo "你是闲得慌吗？\n能解锁的自己刷 TWRP 去，不需要这个！" 1>&2
+        exit 1
+    else
+        echo "我有些不清楚你的 su 提供方是谁，不过注意点总是对的\n"
+    fi
+else
+    echo "本脚本需要 root 权限才可以使用！ \n请输入 'su' 以获取 root 权限" 1>&2
+    exit 1
+fi
+
+
+
+
+
+TWRP_FILE_PATH_AUTO="${0%/*}"
+TWRP_FILE_PATH_TEST='/sdcard/External_Recovery-test'
+TWRP_FILE_PATH_DEFAULT='/sdcard/External_Recovery'
+TWRP_FILE_PATH_SYSTEM='/system/res/External_Recovery'
+TWRP_FILE_PATH_APP='/data/uset/0/group.funnyshenzhou.qkffftros/files/External_Recovery'
+
+
+
+
+chenk_twrp_dir(){
+    if [[ -f "${1}/TWRP_file/sbin.tar.gz" && -s "${1}/TWRP_file/sbin.tar.gz" ]]; then
+        export TWRP_FILE_PATH="${1}"
+    fi
+}
+
+chenk_twrp_dir "${TWRP_FILE_PATH_SYSTEM}"
+chenk_twrp_dir "${TWRP_FILE_PATH_APP}"
+chenk_twrp_dir "${TWRP_FILE_PATH_DEFAULT}"
+chenk_twrp_dir "${TWRP_FILE_PATH_TEST}"
+chenk_twrp_dir "${TWRP_FILE_PATH_AUTO}"
+
+
+
+cat <<-EOF
+"欢迎使用360F4移动版外挂 TWRP"
+"TWRP 版本：TWRP3.1.1-0 "
+"本 TWRP 制作为小w "
+"更新内容请查看 readme"
+"请确定为型号是否为 1501_M02"
+EOF
+echo "\a"
+
+
+
+load_ETWRP(){
+    echo '正在加载外挂式 TWRP'
+    sh "${TWRP_FILE_PATH}/TWRP_file/shell/load_recovery.sh"
+}
+if [[ "${0}" == '/system/bin/factory' ]]; then
+    echo '发现已劫持 /system/bin/factory 文件并进入工厂模式'
+    load_ETWRP
+fi
+
+
+
+menu(){
+    
+    cat <<-EOF
+"  菜单 "
+"0. 查看说明书以及更新日志"
+"1. 重启设备"
+"2. 热重启（杀死 system_server 并让 zygote 重启它）"
+"3. 更彻底的热重启（重启 zygote 与 netd 以及 servicemanager）"
+"4. 退出"
+"5. 进入 TWRP"
+"6. 伪兼容方式进入 TWRP"
+"7. 调试模式进入 TWRP"
+"请输入你的选项"
+EOF
+    echo "\a"
+}
+
+text(){
+    echo "\a"
+    echo "请在5秒内关闭你输入法窗口\n否则后果自负"
+}
+
+
+echo "请按回车键进入菜单"
+read var
+
+menu
+read input
+case "${input}" in
+'0')
+    cat "${TWRP_FILE_PATH}/readme.txt"
+;;
+'1')
+    reboot
+;;
+'2')
+    exec_killall -9 system_server
+;;
+'3')
+    stop
+    start
+;;
+'4')
+    exit
+;;
+'5')
+    text
+    sleep 5
+    load_ETWRP
+;;
+'6')
+    echo 'TODO'
+    exit
+;;
+'7')
+    LOGDIR='/data/local/tmp/External_TWRP.log'
+    echo '----------------------------------------------------------------------------------------------------' >> "${LOGDIR}"
+    text
+    sleep 5
+    sh -x "${TWRP_FILE_PATH}/TWRP_file/shell/recovery.sh" >> "${LOGDIR}" 2>&1 &
+;;
+*)
+    echo '你输入了错误的选项' 1>&2
+    exit 1
+;;
+esac

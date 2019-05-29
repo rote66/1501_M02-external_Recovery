@@ -1,0 +1,181 @@
+#!/system/bin/sh
+
+
+
+
+
+
+#防止后面步骤出现意外导致在 stop 卡死
+set -e
+setenforce 
+
+. "${0%/*}/TWRP_file/shell/utils.sh"
+
+exec_nohup(){
+    exec_command nohup "${@}"
+}
+
+
+
+#检查 TWRP 文件
+check_twrp_file(){
+    if [[ -s ""${1}"/TWRP_file/sbin.tar.gz" ]]; then
+        export TWRP_FILE_PATH=""${1}""
+    fi
+}
+
+check_twrp_file "${0%/*/*}"
+check_twrp_file "${1%/*}"
+
+echo "正在加载 TWRP"
+
+
+
+#挂载一些分区可读写
+mount -o remount,rw /
+mount -o remount,rw /data
+mount -o remount,rw /cache
+mount -o remount,rw /system
+
+
+
+#创建 /tmp
+if [[ -e "/tmp" ]]; then
+    rm -Rf /tmp
+fi
+mkdir /tmp
+chmod 775 /tmp
+cp -Rf "${1}/TWRP_file/busybox" /tmp/busybox
+chmod 775 /tmp/busybox
+
+#引用 /tmp/busybox
+#alias 'tmp-busybox'='/tmp/busybox'
+
+
+#释放 sbin
+for i in $(ls '/sbin/'); do
+    mv "/sbin/${i}" "/sbin/${i}_original"
+done
+chmod 775 /sbin
+tmp-busybox tar -zxf "${1}/TWRP_file/sbin.tar.gz" -C /sbin
+
+#360featureROM2.0特供
+cp -f "${1}/TWRP_file/libdirect-coredump.so" /sbin
+chmod -R 775 /sbin
+
+#
+exec_nohup /sbin/cat /proc/kmsg >'/data/local/tmp/External_TWRP_kmsg.log' &
+
+
+
+if [[ -e "/licenes" ]]; then
+    rm -Rf /license
+fi
+cp -Rf "${1}/TWRP_file/license" /
+chmod 755 /license
+chmod 644 /license/*
+
+
+
+
+if [[ -e "/supersu" ]]; then
+    rm -Rf /supersu
+fi
+cp -Rf "${1}/TWRP_file/supersu" /
+chmod 755 /supersu
+chmod 644 /supersu/*
+
+
+
+if [[ -e "/etc" ]]; then
+    rm -Rf /etc
+fi
+cp -Rf "${1}/TWRP_file/etc"  /
+chmod 755 /etc
+chmod 644 /etc/*
+
+
+
+
+cp -f "${1}/TWRP_file/.twrps" /
+chmod 775 /.twrps
+cp -Rf "${1}/TWRP_file/twres" /
+chmod -R 775 /twres
+cp -Rf "${1}/TWRP_file/res" /
+chmod -R 775 /res
+
+
+
+cp -Rf "${1}/TWRP_file/rc" /tmp/rc
+chmod -R 775 /tmp/rc
+cp -Rf /tmp/rc/* /
+rm -Rf /tmp/rc
+
+
+
+#曲线救内置储存不读取
+TWRP_bind_sdcard(){
+    
+    
+    #别问我这里为啥要等的时间数值是这个，我也不知道为啥非得是这个
+    sleep 5.20
+    if [[ -d '/sdcard' ]]; then
+        chmod 777 /sdcard
+    else
+        mv /sdcard /sdcard_original
+        mkdir /sdcard
+        chmod 777 /sdcard
+    fi
+    
+    inksdcard='/data/media/0'
+    mount -o bind "${inksdcard}" /sdcard
+    
+    #删除变量
+    unset "insdcard"
+}
+
+
+
+#输出log
+print_log(){
+    echo '----------ps -Z beegin----------'
+    ps -Z
+    echo '----------sleep 5.21----------'
+    #也别问我这里为啥要等的时间数值是这个
+    sleep 5.21
+    ps -Z
+    echo '----------ps -Z end----------'
+}
+
+
+
+#解除执行错误保护
+set +e
+
+
+#防止刷入特定包出现意外
+#unalias "tmp-busybox"
+rm -f /tmp/busybox
+
+
+
+setenforce 0
+stop
+stop ylsecureserver
+
+#听说这个服务会干扰启动，不知道是不是真的
+get_cploadserver="$(ps | grep -i cploadserver)"
+[[ "$?" == "0" ]] && echo "${get_cploadserver}" 
+killall -9 cploadserver
+
+
+
+
+print_log >'/data/local/tmp/External_TWRP_ps.log'&
+TWRP_bind_sdcard &
+
+#事实上不需要手动切换上下文
+#被误导了，淦
+
+#recovery
+/sbin/recovery

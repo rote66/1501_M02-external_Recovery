@@ -1,0 +1,169 @@
+#!/system/bin/sh -x
+
+
+
+exec 2>&1
+
+
+
+#防止后面步骤出现意外导致在 stop 卡死
+set -e
+setenforce 0
+
+
+#检查 TWRP 文件
+
+c_t_f(){
+    if [[ "${1}" != '' && -f "${1}/TWRP_file/sbin.tar.gz" && -s "${1}/TWRP_file/sbin.tar.gz" ]]; then
+        export T_F_D="${1}"
+    fi
+}
+
+c_t_f "${0%/*/*/*}"
+c_t_f "${1%/*}"
+
+echo "正在启动 TWRP"
+
+exit
+
+#挂载一些分区可读写
+mount -o remount,rw /
+mount -o remount,rw /data
+mount -o remount,rw /cache
+mount -o remount,rw /system
+
+
+
+#创建 /tmp
+if [[ -e "/tmp" ]]; then
+    rm -Rf /tmp
+fi
+mkdir /tmp
+chmod 775 /tmp
+cp -Rf ./TWRP_file/busybox /tmp/busybox
+chmod 775 /tmp/busybox
+
+#引用 /tmp/busybox
+#alias 'tmp-busybox'='/tmp/busybox'
+
+
+#释放 sbin
+for i in $(ls '/sbin/'); do
+    mv /sbin/"${i}" /sbin/"${i}"_original
+done
+chmod 775 /sbin
+tmp-busybox tar -zxf ./TWRP_file/sbin.tar.gz -C /sbin
+
+#360featureROM2.0特供
+cp -f ./TWRP_file/libdirect-coredump.so /sbin
+chmod -R 775 /sbin
+
+
+
+if [[ -e "/licenes" ]]; then
+    rm -Rf /license
+fi
+cp -Rf ./TWRP_file/license /
+chmod 755 /license
+chmod 644 /license/*
+
+
+
+
+if [[ -e "/supersu" ]]; then
+    rm -Rf /supersu
+fi
+cp -Rf ./TWRP_file/supersu /
+chmod 755 /supersu
+chmod 644 /supersu/*
+
+
+
+if [[ -e "/etc" ]]; then
+    rm -Rf /etc
+fi
+cp -Rf ./TWRP_file/etc  /
+chmod 755 /etc
+chmod 644 /etc/*
+
+
+
+
+cp -f ./TWRP_file/.twrps /
+chmod 775 /.twrps
+cp -Rf ./TWRP_file/twres /
+chmod -R 775 /twres
+cp -Rf ./TWRP_file/res /
+chmod -R 775 /res
+
+
+
+cp -Rf ./TWRP_file/rc /tmp/rc
+chmod -R 775 /tmp/rc
+cp -Rf /tmp/rc/* /
+rm -Rf /tmp/rc
+
+
+
+#曲线救内置储存不读取
+TWRP_sdcard(){
+    
+    inksdcard='/data/media/0'
+    
+    
+    sleep 5.20
+    if [[ -d '/sdcard' ]]; then
+        chmod 777 /sdcard
+    else
+        mv /sdcard /sdcard_original
+        mkdir /sdcard
+        chmod 777 /sdcard
+    fi
+    
+    mount -o bind "${inksdcard}" /sdcard
+    
+    #删除变量
+    unset "insdcard"
+}
+
+
+
+#输出log
+print_log(){
+    echo '----------------------------'
+    ps -Z
+    echo '----------------------------'
+    dmesg
+    echo '----------------------------'
+    sleep 5.21
+    ps -Z
+    echo '----------------------------'
+    dmesg
+}
+
+
+
+#解除执行错误保护
+set +e
+
+
+#防止刷入特定包出现意外
+#unalias "tmp-busybox"
+rm -f /tmp/busybox
+
+
+stop
+setenforce 0
+
+killall -9 cploadserver
+#killall -9 system_server
+#killall -9 vold
+#killall -9 sdcard
+
+
+
+
+print_log &
+TWRP_sdcard &
+
+runcon 'u:r:recovery:s0' '/sbin/recovery'

@@ -1,4 +1,4 @@
-# 360-1501_M02-external_Recovery
+﻿# 360-1501_M02-external_Recovery
 
 
 
@@ -12,8 +12,8 @@ ___
 本外挂 `TWRP` 基于 `TWRP3.1.1-0` 制作  
 底包为 `los14.1`  
 适用机型 `360f4` 移动版  
-既 `360-1501_M02`  
-<STRIKE>虽然 `360-1501_A02` 经测试也可以使用</STRIKE>  
+即 `360-1501_M02`  
+<del>虽然 `360-1501_A02` 经测试也可以使用</del>  
 其他未经过测试  
 理论上同分区设备可用  
 
@@ -25,7 +25,7 @@ ___
 你需要准备好的东西：  
   
 1. 安装 [busybox][meefik/busybox] 并在软件内点击 `Install`  
-2. 安装 [终端][zt515/Ansole] <STRIKE>（虽然说什么终端都可以）</STRIKE>  
+2. 安装 [终端][zt515/Ansole] <del>（虽然说什么终端都可以）</del>  
 3. 一个可以进行 root 操作的文件管理器（推荐 [RE文件管理器][speedsoftware/rootexplorer] 或者是 [MT管理器][bin/mtfileManager]）  
 4. 一双勤劳的手和会思考的大脑  
 当这些准备好之后你就可以开始了  
@@ -35,7 +35,7 @@ ___
 使用步骤：  
   
 1. 点 [这里][External-Recovery_Download] 下载外挂TWRP的压缩包，并解压到任意目录  
-2. 在 [终端][zt515/Ansole] 输入 `su` 获取 root  
+2. 在 [终端][zt515/Ansole] 输入 `su`  
 3. 输入 `sh` 并输入空格，然后复制 `rec` 的绝对路径并粘贴在 [终端][zt515/Ansole]  
 4. 按照提示操作即可  
 5. 直接进入 TWRP 时务必关闭输入法，否则……  
@@ -64,11 +64,16 @@ ___
 目前已知问题：  
   
 1. 界面容易闪  
+2. 放置时间过久可能会出现 `TWRP` 界面丢失问题  
 3. 尚不明确  
 
 ___
 
 更新日志：  
+
+V6：~~船新脚本，等你来玩~~
+更新脚本令其变得更加通用，理论上你可以不用完全重启就可以在进入 `TWRP` 时退回到常规系统（最好要保证什么操作也没做）
+现在你可以使用 `telnet` 来控制手机终端了~~防止脚本出现意外导致无法进入 `TWRP`，或许可以手动输入 `setsid recovery` 在脚本出问题时进入 `TWRP` 或者重启~~
   
 V5.00001： `@funnypro` 根据 `@manhong2112` 的技术支持和指导以及 `@小XIN。` 和 `@SELinux ` 还有 `@        ` （测试人员User_ID均取自QQ群名片）的多次测试做了一些微小的工作  
   
@@ -76,14 +81,14 @@ V5：修复物理按键失灵，修复 360os2.0 上用终端进入不了的问�
   
 V4：更新 `TWRP` 为 `TWRP 3.1.1-0` 版本，尝试解决 `360os2.0 上无法启动`的问题  
   
-V3：修正 system 挂载问题，修正版本异常，修复若干bug，去除自动刷入，去除之前的检测  
+V3：修正 `/system` 挂载问题，修正版本异常，修复若干bug，去除自动刷入，去除之前的检测  
   
 V2：替换 `TWRP` 版本为自编译 3.1.0-0 ，并且测试可以刷 `官方 OTA 包` 以及 `SuperSU` ，修复若干bug  
 
 ___
 *******************
 [External-Recovery_Download]:https://github.com/rote66/1501_M02-external_Recovery/releases
-[funnypro/3mptros]:https://github.com/funnypro/360f4
+[xxxxxliil/qkfffrs]:https://github.com/xxxxxliil/qkfffrs
 [meefik/busybox]:https://github.com/meefik/busybox/releases
 [zt515/Ansole]:http://www.coolapk.com/apk/com.romide.terminal
 [topjohnwu/Magisk]:https://github.com/topjohnwu/MagiskManager/releases
